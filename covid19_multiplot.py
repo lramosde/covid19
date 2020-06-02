@@ -42,7 +42,7 @@ for country in countries:
                      logx=True, logy=True,
 #                     logx=False, logy=True,
                      ax = ax, 
-                     xlim=(1,1000000),ylim=(1,1000000))
+                     xlim=(1,10000000),ylim=(1,10000000))
   count = count +1
 #  if count > 2 :
   ax.legend().remove()
