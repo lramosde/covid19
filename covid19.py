@@ -6,7 +6,7 @@ source = "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geog
 
 data = pd.read_excel(source)
 
-country = "Denmark"
+country = "Brazil"
 selected_data = data.sort_values(by=['dateRep'])
 #col_selection = [ 'dateRep', 'day', 'month', 'year', 'cases', 'deaths', 'countriesAndTerritories']
 #selected_data = selected_data[col_selection]
