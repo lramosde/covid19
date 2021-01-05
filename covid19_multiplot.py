@@ -4,16 +4,18 @@ import numpy as np
 import matplotlib.pyplot as plt
 from datetime import date
 
-source = "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx"
+#source = "https://www.ecdc.europa.eu/sites/default/files/documents/COVID-19-geographic-disbtribution-worldwide.xlsx"
+# new data source. The data tracking stopped on December 14th, 2020
+source = "https://covid.ourworldindata.org/data/owid-covid-data.xlsx"
 data = pd.read_excel(source)
-data = data.sort_values(by=['dateRep'])
+data = data.sort_values(by=['date'])
 
 # select the country (in English), e.g. United_States_of_America
-countries = ['Italy', 'Greece', 'Portugal', 'Spain', 'France', 'United_Kingdom', 'Ireland', 
+countries = ['Italy', 'Greece', 'Portugal', 'Spain', 'France', 'United Kingdom', 'Ireland', 
              'Belgium', 'Netherlands', 'Switzerland', 'Austria', 'Germany', 
-             'Denmark', 'Sweden', 'Brazil', 'Peru', 'United_States_of_America', 
-             'Turkey', 'Russia', 'India', 'China',  'South_Korea', 
-             'Japan', 'Australia', 'New_Zealand'    ]
+             'Denmark', 'Sweden', 'Brazil', 'Peru', 'United States', 
+             'Turkey', 'Russia', 'India', 'China',  'South Korea', 
+             'Japan', 'Australia', 'New Zealand'    ]
 
 num_rows = int( m.ceil( m.sqrt( len(countries) )         ) ) 
 num_cols = int( m.ceil(         len(countries) / num_rows) ) 
@@ -22,16 +24,13 @@ if num_rows * num_cols < len(countries)  :
 
 fig = plt.figure()
 
-plt.suptitle('Covid19 - daily cases (red) / deaths (blue) per million - 2019-12-31 - ' + str(date.today()))
+plt.suptitle('Covid19 - daily cases (red) / deaths (blue) per million - 2020-01-01 - ' + str(date.today()))
 count = 1
 for country in countries:
-  selected_data = data[data['countriesAndTerritories']==country]
-  selected_data['deaths'] = 1.0e6 * selected_data['deaths'] / selected_data['popData2019']
-
-#  selected_data['total_cases'] = selected_data['cases'].cumsum()
-  selected_data['total_per_million'] = 1.0e6 * selected_data['cases'].cumsum() / selected_data['popData2019']
-  selected_data['cases']             = 1.0e6 * selected_data['cases']          / selected_data['popData2019']
-#  chart = country + ' - covid19 - daily cases (red) / deaths (blue) - 2019-12-31 - ' + str(date.today())
+  selected_data = data[data['location']==country]
+  selected_data['deaths']            = 1.0e6 * selected_data['new_deaths'] / selected_data['population']
+  selected_data['total_per_million'] = 1.0e6 * selected_data['new_cases'].cumsum() / selected_data['population']
+  selected_data['cases']             = 1.0e6 * selected_data['new_cases']          / selected_data['population']
   chart = country
   ax = fig.add_subplot(num_rows,num_cols,count)
 #  ax.set_aspect('equal')
@@ -46,7 +45,7 @@ for country in countries:
                      logx=True, logy=True,
 #                     logx=False, logy=True,
                      ax = ax,
-                     xlim=(1.0e-3,1.0e4),ylim=(1.0e-3,1.0e3))
+                     xlim=(1.0e-3,1.0e5),ylim=(1.0e-3,5.0e3))
 #                     xlim=(1e-10,1e-4),ylim=(1e-8,1e-4))
   count = count +1
 #  if count > 2 :
