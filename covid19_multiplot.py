@@ -28,7 +28,7 @@ plt.suptitle('Covid19 - daily cases (red) / deaths (blue) per million - 2020-01-
 count = 1
 for country in countries:
   selected_data = data[data['location']==country]
-  selected_data['deaths']            = 1.0e6 * selected_data['new_deaths'] / selected_data['population']
+  selected_data['deaths']            = 1.0e6 * selected_data['new_deaths']         / selected_data['population']
   selected_data['total_per_million'] = 1.0e6 * selected_data['new_cases'].cumsum() / selected_data['population']
   selected_data['cases']             = 1.0e6 * selected_data['new_cases']          / selected_data['population']
   chart = country
